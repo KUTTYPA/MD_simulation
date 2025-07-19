@@ -1,0 +1,55 @@
+; Run control
+integrator          = md            ; leap-frog integrator
+nsteps              = 500000        ; 100 ns = 50000000 steps with 2 fs
+dt                  = 0.002         ; 2 fs
+
+; Output control
+nstxout             = 10000         ; coordinates every 20 ps
+nstvout             = 10000         ; velocities every 20 ps
+nstenergy           = 1000          ; energies every 2 ps
+nstlog              = 1000          ; log file every 2 ps
+nstxout-compressed  = 1000          ; compressed trajectory (every 2 ps)
+
+; Bond parameters
+continuation        = yes           ; continuation from NPT
+constraint_algorithm= lincs
+constraints         = h-bonds
+lincs_iter          = 1
+lincs_order         = 4
+
+; Neighborsearching
+cutoff-scheme       = Verlet
+ns_type             = grid
+nstlist             = 10
+rcoulomb            = 1.0
+rvdw                = 1.0
+
+; Electrostatics
+coulombtype         = PME
+pme_order           = 4
+fourierspacing      = 0.16
+
+; Temperature coupling
+tcoupl              = V-rescale
+tc-grps             = System
+tau_t               = 0.1
+ref_t               = 300
+
+; Pressure coupling
+pcoupl              = Parrinello-Rahman
+pcoupltype          = isotropic
+tau_p               = 2.0
+ref_p               = 1.0
+compressibility     = 4.5e-5
+
+; Periodic boundary conditions
+pbc                 = xyz
+
+; Dispersion correction
+DispCorr            = EnerPres
+
+; Velocity generation
+gen_vel             = no            ; velocities already from NPT
+
+; COM motion removal
+comm-mode           = Linear

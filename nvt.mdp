@@ -1,0 +1,48 @@
+; nvt.mdp - NVT equilibration
+
+define          = -DPOSRES       ; Position restrain the protein (if applicable)
+integrator      = md             ; Leap-frog integrator
+nsteps          = 50000          ; 100 ps (50000 steps × 0.002 ps)
+dt              = 0.002          ; 2 fs time step
+
+; Output control
+nstxout         = 1000
+nstvout         = 1000
+nstenergy       = 1000
+nstlog          = 1000
+
+; Bond parameters
+continuation    = no             ; This is the first dynamics run
+constraint_algorithm = lincs
+constraints     = all-bonds
+lincs_iter      = 1
+lincs_order     = 4
+
+; Neighbor searching
+cutoff-scheme   = Verlet
+ns_type         = grid
+nstlist         = 10
+rlist           = 1.0
+
+; Electrostatics and van der Waals
+coulombtype     = PME
+rcoulomb        = 1.0
+rvdw            = 1.0
+DispCorr        = EnerPres
+
+; Temperature coupling
+tcoupl          = V-rescale                     ; Modified Berendsen thermostat
+tc-grps         = Protein Non-Protein           ; Separate coupling groups
+tau_t           = 0.1   0.1
+ref_t           = 300   300                     ; Reference temperature (in K)
+
+; Pressure coupling is off for NVT
+pcoupl          = no
+
+; Periodic boundary conditions
+pbc             = xyz
+
+; Velocity generation
+gen_vel         = yes
+gen_temp        = 300
+gen_seed        = -1
